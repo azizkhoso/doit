@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
+    <div class="row gap-1">
+      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('token')">Log out</button>
+    </div>
+  </div>
+  <div class="stack flex-grow-1">
+    <div class="stack m-auto w-full" style="max-width: 620px;">
+      <div class="task-container gap-1" style="font-size: 12px;">
+        <h2>Task Details</h2>
+        <div class="flex">
+          <b>Task (Title):</b>&nbsp;
+          <p id="title" style="color: gray;"></p>
+        </div>
+        <div class="row gap-2">
+          <div class="flex">
+            <b>Start Date:</b>&nbsp;
+            <p id="startDate" style="color: gray;"></p>
+          </div>
+          <div class="flex">
+            <b>Finish Date:</b>&nbsp;
+            <p id="finishDate" style="color: gray;"></p>
+          </div>
+        </div>
+        <p>
+          <b>Task Description:</b>
+          <span style="color: gray;" id="description"></span>
+        </p>
+        <div class="flex">
+          <b>Task Status:</b>&nbsp;<div id="status"></div>
+        </div>
+        <button class="back-btn" onclick="window.location.replace('/tasks')">&lt; Back to list</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const title = document.getElementById('title');
+    const startDate = document.getElementById('startDate');
+    const finishDate = document.getElementById('finishDate');
+    const description = document.getElementById('description');
+    const status = document.getElementById('status');
+
+    const task = JSON.parse(localStorage.getItem('task-details')); // get the task in string format back to object format
+
+    title.innerText = task.title;
+    startDate.innerText = task.startDate;
+    finishDate.innerText = task.finishDate;
+    description.innerText = task.description;
+    status.innerText = task.status;
+    document.getElementById('status').setAttribute('status', task.status);
+
+  </script>
+</body>
+</html>

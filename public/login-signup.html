@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="stack flex-grow-1">
+    <div class="stack m-auto gap-2" style="width: 400px;">
+      <img src="logo-dark.png" class="logo-2 mx-auto" onclick="window.location.replace('/')" />
+      <div class="stack gap-1 w-full">
+        <div class="stack w-full gap-0.5">
+          <label class="input-label">User</label>
+          <input class="login-input" id="userName" type="text" />
+        </div>
+        <div class="stack w-full gap-0.5">
+          <label class="input-label">Password</label>
+          <input class="login-input" id="password" type="password" />
+        </div>
+      </div>
+      <div class="stack gap-1">
+        <p class="mx-auto" id="message"></p>
+        <button class="login-btn" onclick="login()">Log in</button>
+        <button class="signup-btn" onclick="signup()">Sign up</button>
+      </div>
+      <div class="stack">
+        <h5 class="mx-auto">DOit - Task Management Application</h5>
+        <h5 class="mx-auto">Module 2 Project by: Miguel Gonzalez</h5>
+      </div>
+    </div>
+  </div>
+  <script>
+    const userName = document.getElementById('userName');
+    const password = document.getElementById('password');
+    const message = document.getElementById('message');
+
+    function login() {
+      fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        },
+        body: JSON.stringify({
+          userName: userName.value,
+          password: password.value
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            message.innerHTML = data.error;
+            message.setAttribute('style', 'color: red;');
+          } else {
+            localStorage.setItem('token', data.token);
+            window.location.replace('/tasks');
+          }
+        })
+    }
+
+    function signup() {
+      fetch('http://localhost:3000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        },
+        body: JSON.stringify({
+          userName: userName.value,
+          password: password.value
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            message.innerHTML = data.error;
+            message.setAttribute('style', 'color: red;');
+          } else {
+            localStorage.setItem('token', data.token);
+            window.location.replace('/tasks');
+          }
+        })
+    }
+  </script>
+</body>
+</html>

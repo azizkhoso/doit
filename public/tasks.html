@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
+    <div class="row gap-1">
+      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('token')">Log out</button>
+    </div>
+  </div>
+  <div class="stack flex-grow-1">
+    <div class="stack m-auto w-full" style="max-width: 620px;">
+      <div class="tasks-container">
+        <table class="w-full tasks-table">
+          <thead>
+            <tr style="padding: 8px 0px; text-align: left;">
+              <th>Task</th>
+              <th>Status</th>
+              <th>Operations</th>
+            </tr>
+          </thead>
+          <tbody id="tasks-tbody">
+          </tbody>
+        </table>
+        <button class="add-task-btn" onclick="window.location.replace('/add-task')">Add</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function deleteTask(_id) {
+      fetch('http://localhost:3000/user-tasks/'+_id, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) alert('Error while deleting tasks');
+          else window.location.reload();
+        })
+    }
+
+    window.onload = () => { // after document is loaded, fetch all tasks
+      const tbody = document.getElementById('tasks-tbody');
+
+      fetch('http://localhost:3000/user-tasks', {
+        method: 'GET',
+        headers: {
+          'Authorization': localStorage.getItem('token'),
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          data.tasks.forEach((task) => {
+            // creating row element
+            const tr = document.createElement('tr');
+            // creating title cell
+            const tdTitle = document.createElement('td'); tdTitle.appendChild(document.createTextNode(task.title));
+            // creating status cell
+            const tdStatus = document.createElement('td'); tdStatus.appendChild(document.createTextNode(task.status)); tdStatus.setAttribute('status', task.status);
+            // creating edit button
+            const editBtn = document.createElement('button');
+            editBtn.setAttribute('class', 'task-btn');
+            editBtn.appendChild(document.createTextNode('Edit'));
+            editBtn.onclick = () => { // adding onclick handler
+              window.location.replace('/edit-task'); // go to edit task page
+              localStorage.setItem('edit-task', JSON.stringify(task)) // save the task details in localstorage temporarily
+            };
+            // creating details button
+            const detailsBtn = document.createElement('button');
+            detailsBtn.setAttribute('class', 'task-btn');
+            detailsBtn.appendChild(document.createTextNode('Details'));
+            detailsBtn.onclick = () => { // adding onclick handler
+              window.location.replace('/task-details'); // go to task details page
+              localStorage.setItem('task-details', JSON.stringify(task)) // save the task details in localstorage temporarily
+            };
+            // creating delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.setAttribute('class', 'task-btn');
+            deleteBtn.appendChild(document.createTextNode('Delete'));
+            deleteBtn.onclick = () => { // adding onclick handler
+              deleteTask(task._id); // delete task request
+            };
+            // creating action buttons cell
+            const tdAction = document.createElement('td');
+            tdAction.setAttribute('class', 'row gap-2 align-center');
+            tdAction.append(detailsBtn, editBtn, deleteBtn); // adding children
+            // adding cells to row
+            tr.appendChild(tdTitle);
+            tr.appendChild(tdStatus);
+            tr.appendChild(tdAction);
+
+            tbody.append(tr); // adding row to table body
+          })
+        });
+
+    }
+  </script>
+</body>
+</html>

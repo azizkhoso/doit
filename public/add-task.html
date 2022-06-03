@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="top-bar">
+    <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
+    <div class="row gap-1">
+      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('token')">Log out</button>
+    </div>
+  </div>
+  <div class="stack flex-grow-1">
+    <div class="form-container">
+      <button class="back-btn" onclick="window.location.replace('/tasks')">&lt; Back to list</button>
+      <h3 class="mx-auto">Add Task</h3>
+      <div class="stack gap-1 w-full">
+        <div class="stack w-full gap-0.5">
+          <label class="input-label">Task (Title)</label>
+          <input class="input" id="title" type="text" />
+        </div>
+        <div class="row gap-0.5 justify-between">
+          <div class="stack gap-0.5" style="width: 48%;">
+            <label class="input-label">Start Date (dd/mm/yyyy)</label>
+            <input class="input" id="startDate" type="text" />
+          </div>
+          <div class="stack gap-0.5" style="width: 48%;">
+            <label class="input-label">Finish Date (dd/mm/yyyy)</label>
+            <input class="input" id="finishDate" type="text" />
+          </div>
+        </div>
+        <div class="stack w-full gap-0.5">
+          <label class="input-label">Task Description</label>
+          <textarea rows="8" class="input" id="description"></textarea>
+        </div>
+        <div class="stack w-full gap-0.5">
+          <label class="input-label">Task Status</label>
+          <select class="input" id="status">
+            <option value="Proposed" style="color: blue;">Proposed</option>
+            <option value="Complete" style="color: green;">Complete</option>
+            <option value="Review" style="color: violet;">Review</option>
+            <option value="In Process" style="color: red;">In Process</option>
+          </select>
+        </div>
+      </div>
+      <button class="add-task-btn" onclick="addTask()">Add</button>
+    </div>
+  </div>
+  <script>
+    const title = document.getElementById('title');
+    const startDate = document.getElementById('startDate');
+    const finishDate = document.getElementById('finishDate');
+    const description= document.getElementById('description');
+    const status = document.getElementById('status');
+
+    function addTask() {
+      fetch('http://localhost:3000/user-tasks/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+          Authorization: localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          title: title.value,
+          startDate: startDate.value,
+          finishDate: finishDate.value,
+          description: description.value,
+          status: status.value
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            alert('Error:\n' + data.error.message);
+          } else {
+            window.location.replace('/tasks');
+          }
+        })
+    }
+  </script>
+</body>
+</html>
