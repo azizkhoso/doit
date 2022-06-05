@@ -4,57 +4,74 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Page title-->
   <title>DOit</title>
+  <!--Loading Inter font family-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <!--Attaching external stylesheet-->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!--Tob bar-->
   <div class="top-bar">
     <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
     <div class="row gap-1">
-      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('token')">Log out</button>
+      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('_id')">Log out</button>
     </div>
   </div>
+  <!--Below Tob bar page content-->
   <div class="stack flex-grow-1">
     <div class="stack m-auto w-full" style="max-width: 620px;">
+      <!--Task details container div-->
       <div class="task-container gap-1" style="font-size: 12px;">
         <h2>Task Details</h2>
+        <!--Task title and its value container-->
         <div class="flex">
           <b>Task (Title):</b>&nbsp;
+          <!--Value-->
           <p id="title" style="color: gray;"></p>
         </div>
         <div class="row gap-2">
+          <!--Start date and its value container-->
           <div class="flex">
             <b>Start Date:</b>&nbsp;
+            <!--Value-->
             <p id="startDate" style="color: gray;"></p>
           </div>
+          <!--Finish date and its value container-->
           <div class="flex">
             <b>Finish Date:</b>&nbsp;
+            <!--Value-->
             <p id="finishDate" style="color: gray;"></p>
           </div>
         </div>
+        <!--Description and its value container-->
         <p>
           <b>Task Description:</b>
+          <!--Value-->
           <span style="color: gray;" id="description"></span>
         </p>
+        <!--Task status and its value container-->
         <div class="flex">
           <b>Task Status:</b>&nbsp;<div id="status"></div>
         </div>
+        <!--Back button for going back to tasks page-->
         <button class="back-btn" onclick="window.location.replace('/tasks')">&lt; Back to list</button>
       </div>
     </div>
   </div>
   <script>
+    // Variables for holding DOM elements
     const title = document.getElementById('title');
     const startDate = document.getElementById('startDate');
     const finishDate = document.getElementById('finishDate');
     const description = document.getElementById('description');
     const status = document.getElementById('status');
-
+    // Getting task details from local storage
     const task = JSON.parse(localStorage.getItem('task-details')); // get the task in string format back to object format
-
+    // Setting up details
     title.innerText = task.title;
     startDate.innerText = task.startDate;
     finishDate.innerText = task.finishDate;

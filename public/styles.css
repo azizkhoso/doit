@@ -1,8 +1,11 @@
+/* Default styles */
 * {
   margin: 0;
   border: 0;
   font-family: 'Inter';
 }
+
+/* Utitlity classes for handling small styles */
 .flex {
   display: flex;
 }
@@ -45,8 +48,9 @@
 .w-full {
   width: 100%;
 }
+/* Utitlity classes ended */
 
-body {
+body { /* styles for body */
   background-color: #f5f5f7;
   min-height: 100vh;
   display: flex;
@@ -54,6 +58,7 @@ body {
 }
 
 .top-bar {
+  /* Styles for top-bar */
   padding: 8px 16px;
   background: #152B39;
   color: white;
@@ -63,27 +68,34 @@ body {
   flex-wrap: wrap;
 }
 .logo {
+  /* Top bar logo style */
   max-width: 100px;
 }
 .logo-2 {
+  /* Logo on welcome page */
   max-width: 150px;
 }
 .bar-btn {
+  /* Buttons in top-bar */
   font-size: 16px;
   background-color: transparent;
   color: white;
 }
-.input-label {
+
+/* Login-Signup page styles */
+.input-label { /* Input label styles */
   font-size: 12px;
   font-weight: 600;
 }
 .login-input {
+  /* Input on login-signup page */
   padding: 6px;
   font-size: 18px;
   border-radius: 12px;
   border: 2px solid black;
 }
 .login-btn {
+  /* Login Button */
   padding: 6px;
   font-size: 18px;
   border-radius: 12px;
@@ -91,12 +103,17 @@ body {
   color: white;
 }
 .signup-btn {
+  /* Signup button */
   padding: 6px;
   font-size: 18px;
   border-radius: 12px;
   background-color: rgb(173, 173, 173);
 }
+/* login-signup page styles ended */
+
+/* Tasks page styles */
 .tasks-container {
+  /* Container for tasks table */
   background-color: white;
   border-radius: 12px;
   display: flex;
@@ -104,11 +121,13 @@ body {
   width: 100%;
 }
 .tasks-table {
+  /* Tasks table styles */
   padding: 12px;
   border-collapse: separate;
   border-spacing: 0 16px;
   font-size: 12px;
 }
+/* Conditional styles for different values of status cell in table */
 tr [status='Proposed'] {
   color: blue;
 }
@@ -121,6 +140,66 @@ tr [status='Review'] {
 tr [status='In Process'] {
   color: red;
 }
+.task-btn {
+  /* Edit, Update or Delete button styles in tasks table */
+  padding: 8px 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  min-width: 60px;
+}
+.add-task-btn {
+  /* Add Task button styles in tasks page */
+  margin: 16px auto;
+  width: 100%;
+  max-width: 200px;
+  padding: 6px;
+  border-radius: 8px;
+  background-color: rgb(112, 112, 222);
+  color: white;
+}
+/* Tasks page styles ended */
+
+/* Back button for going back to tasks page */
+.back-btn {
+  color: blue;
+  background-color: transparent;
+  margin-right: auto;
+}
+
+/* Styles for add and edit task pages */
+.form-container {
+  /* Container div for handling input fields of task details */
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 1em;
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+}
+.input {
+  /* Input of add or edit task page */
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 2px solid gray;
+  background-color: rgb(245, 245, 245);
+}
+/* Styles for add and edit task pages eneded */
+
+/* Task details page */
+.task-container {
+  /* Task details container div styles */
+  padding: 8px 12px;
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+/* Conditional styles for different values of status div in task-details page */
 div [status='Proposed'] {
   color: blue;
 }
@@ -133,49 +212,4 @@ div [status='Review'] {
 div [status='In Process'] {
   color: red;
 }
-.task-btn {
-  padding: 8px 12px;
-  font-weight: 600;
-  border-radius: 6px;
-  min-width: 60px;
-}
-.add-task-btn {
-  margin: 16px auto;
-  width: 100%;
-  max-width: 200px;
-  padding: 6px;
-  border-radius: 8px;
-  background-color: rgb(112, 112, 222);
-  color: white;
-}
-.back-btn {
-  color: blue;
-  background-color: transparent;
-  margin-right: auto;
-}
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  gap: 1em;
-  background-color: white;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  padding: 8px 12px;
-}
-.input {
-  padding: 6px;
-  font-size: 14px;
-  border-radius: 12px;
-  border: 2px solid gray;
-  background-color: rgb(245, 245, 245);
-}
-.task-container {
-  padding: 8px 12px;
-  background-color: white;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+/* Task details page styles ended */

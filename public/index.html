@@ -4,21 +4,29 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Page title-->
   <title>DOit</title>
+  <!--Loading Inter font family-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!--Attaching external stylesheet-->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!--Top bar-->
   <div class="top-bar">
+    <!--Logo of DOit-->
     <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
+    <!--login and signup buttons-->
     <div class="row gap-1">
       <button class="bar-btn" onclick="window.location.replace('/login-signup')">Log in</button>
       <button class="bar-btn" onclick="window.location.replace('/login-signup')">Sign up</button>
     </div>
   </div>
+  <!--Below Topbar page content-->
   <div class="stack flex-grow-1">
+    <!--Welcome message container-->
     <div class="stack m-auto" style="width: 400px;">
       <img src="logo-dark.png" class="logo-2 mx-auto" />
       <h1 style="text-align: center;">Welcome to the simplest app to manage your tasks</h1>

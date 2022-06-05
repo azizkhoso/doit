@@ -4,31 +4,45 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Page title-->
   <title>DOit</title>
+  <!--Loading Inter font family-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <!--Attaching external stylesheet-->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!--Page content start-->
   <div class="stack flex-grow-1">
     <div class="stack m-auto gap-2" style="width: 400px;">
+      <!-- Logo -->
       <img src="logo-dark.png" class="logo-2 mx-auto" onclick="window.location.replace('/')" />
       <div class="stack gap-1 w-full">
+        <!-- User lable and input container -->
         <div class="stack w-full gap-0.5">
           <label class="input-label">User</label>
+          <!--User Input-->
           <input class="login-input" id="userName" type="text" />
         </div>
+        <!-- Password lable and input container -->
         <div class="stack w-full gap-0.5">
           <label class="input-label">Password</label>
+          <!--Password Input-->
           <input class="login-input" id="password" type="password" />
         </div>
       </div>
+      <!--Message, login and signup container-->
       <div class="stack gap-1">
+        <!-- Message -->
         <p class="mx-auto" id="message"></p>
+        <!-- Login Button -->
         <button class="login-btn" onclick="login()">Log in</button>
+        <!-- Sign up button -->
         <button class="signup-btn" onclick="signup()">Sign up</button>
       </div>
+      <!--User details container div-->
       <div class="stack">
         <h5 class="mx-auto">DOit - Task Management Application</h5>
         <h5 class="mx-auto">Module 2 Project by: Miguel Gonzalez</h5>
@@ -36,56 +50,63 @@
     </div>
   </div>
   <script>
+    // Variables for holding DOM elements
     const userName = document.getElementById('userName');
     const password = document.getElementById('password');
     const message = document.getElementById('message');
 
-    function login() {
-      fetch('http://localhost:3000/login', {
-        method: 'POST',
+    // Login function
+    async function login() {
+      // Sending login information to API server
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST', // post request
         headers: {
           'Content-Type': 'application/json',
           'accept': '*/*',
         },
         body: JSON.stringify({
+          // Getting values
           userName: userName.value,
           password: password.value
         })
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            message.innerHTML = data.error;
-            message.setAttribute('style', 'color: red;');
-          } else {
-            localStorage.setItem('token', data.token);
-            window.location.replace('/tasks');
-          }
-        })
+      });
+      // Parsing response
+      const data = await response.json();
+      // checking errors
+      if (data.error) {
+        message.innerHTML = data.error; // set message element text
+        message.setAttribute('style', 'color: red;'); // set color as red for error
+      } else {
+        localStorage.setItem('_id', data._id); // save id in localstorage for successfull login
+        window.location.replace('/tasks'); // go to tasks page
+      }
     }
 
-    function signup() {
-      fetch('http://localhost:3000/signup', {
-        method: 'POST',
+    // Signup function
+    async function signup() {
+      // Sending signup information to API server
+      const response = await fetch('http://localhost:3000/signup', {
+        method: 'POST', // post request
         headers: {
           'Content-Type': 'application/json',
           'accept': '*/*',
         },
         body: JSON.stringify({
+          // Getting values
           userName: userName.value,
           password: password.value
         })
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            message.innerHTML = data.error;
-            message.setAttribute('style', 'color: red;');
-          } else {
-            localStorage.setItem('token', data.token);
-            window.location.replace('/tasks');
-          }
-        })
+      });
+      // Parsing response
+      const data = await response.json();
+      // checking errors
+      if (data.error) {
+        message.innerHTML = data.error; // set message element text
+        message.setAttribute('style', 'color: red;'); // set color as red for error
+      } else {
+        localStorage.setItem('_id', data._id); // save id in localstorage for successfull signup
+        window.location.replace('/tasks'); // go to tasks page
+      }
     }
   </script>
 </body>

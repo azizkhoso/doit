@@ -4,23 +4,30 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Page title-->
   <title>DOit</title>
+  <!--Loading Inter font family-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <!--Attaching external stylesheet-->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!--Tob bar-->
   <div class="top-bar">
     <img src="logo-white.png" class="logo" onclick="window.location.replace('/')" />
     <div class="row gap-1">
-      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('token')">Log out</button>
+      <button class="bar-btn" onclick="window.location.replace('/login-signup'); localStorage.removeItem('_id')">Log out</button>
     </div>
   </div>
+  <!--Below Tob bar page content-->
   <div class="stack flex-grow-1">
     <div class="stack m-auto w-full" style="max-width: 620px;">
       <div class="tasks-container">
+        <!--Tasks table-->
         <table class="w-full tasks-table">
+          <!--Table header-->
           <thead>
             <tr style="padding: 8px 0px; text-align: left;">
               <th>Task</th>
@@ -28,81 +35,96 @@
               <th>Operations</th>
             </tr>
           </thead>
+          <!--Table body contains all the rows of tasks-->
           <tbody id="tasks-tbody">
           </tbody>
+          <!--Table body end-->
         </table>
+        <!--Table end-->
+        <!--Button for going to add-task page-->
         <button class="add-task-btn" onclick="window.location.replace('/add-task')">Add</button>
       </div>
     </div>
   </div>
   <script>
-    function deleteTask(_id) {
-      fetch('http://localhost:3000/user-tasks/'+_id, {
-        method: 'DELETE',
+    // Delete task function
+    async function deleteTask(_id) { // function called when the delete button for a task is clicked
+      // Requesting for deletion of task
+      const response = await fetch('http://localhost:3000/user-tasks/'+_id, {
+        method: 'DELETE', // delete request
         headers: {
-          'Authorization': localStorage.getItem('token'),
+          'Authorization': localStorage.getItem('_id'),
         }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.error) alert('Error while deleting tasks');
-          else window.location.reload();
-        })
+      });
+      // Parsing response
+      const data = await response.json();
+      // checking errors
+      if (data.error) {
+        alert('Error:\n' + data.error);
+      } else { // else refresh the page
+        window.location.reload();
+      }
     }
 
-    window.onload = () => { // after document is loaded, fetch all tasks
+    window.onload = async () => { // after document is loaded, fetch all tasks
       const tbody = document.getElementById('tasks-tbody');
-
-      fetch('http://localhost:3000/user-tasks', {
-        method: 'GET',
+      // Getting data from API
+      const response = await fetch('http://localhost:3000/user-tasks', {
+        method: 'GET', // get request for all tasks
         headers: {
-          'Authorization': localStorage.getItem('token'),
+          'Authorization': localStorage.getItem('_id'),
         }
-      })
-        .then(res => res.json())
-        .then(data => {
-          data.tasks.forEach((task) => {
-            // creating row element
-            const tr = document.createElement('tr');
-            // creating title cell
-            const tdTitle = document.createElement('td'); tdTitle.appendChild(document.createTextNode(task.title));
-            // creating status cell
-            const tdStatus = document.createElement('td'); tdStatus.appendChild(document.createTextNode(task.status)); tdStatus.setAttribute('status', task.status);
-            // creating edit button
-            const editBtn = document.createElement('button');
-            editBtn.setAttribute('class', 'task-btn');
-            editBtn.appendChild(document.createTextNode('Edit'));
-            editBtn.onclick = () => { // adding onclick handler
-              window.location.replace('/edit-task'); // go to edit task page
-              localStorage.setItem('edit-task', JSON.stringify(task)) // save the task details in localstorage temporarily
-            };
-            // creating details button
-            const detailsBtn = document.createElement('button');
-            detailsBtn.setAttribute('class', 'task-btn');
-            detailsBtn.appendChild(document.createTextNode('Details'));
-            detailsBtn.onclick = () => { // adding onclick handler
-              window.location.replace('/task-details'); // go to task details page
-              localStorage.setItem('task-details', JSON.stringify(task)) // save the task details in localstorage temporarily
-            };
-            // creating delete button
-            const deleteBtn = document.createElement('button');
-            deleteBtn.setAttribute('class', 'task-btn');
-            deleteBtn.appendChild(document.createTextNode('Delete'));
-            deleteBtn.onclick = () => { // adding onclick handler
-              deleteTask(task._id); // delete task request
-            };
-            // creating action buttons cell
-            const tdAction = document.createElement('td');
-            tdAction.setAttribute('class', 'row gap-2 align-center');
-            tdAction.append(detailsBtn, editBtn, deleteBtn); // adding children
-            // adding cells to row
-            tr.appendChild(tdTitle);
-            tr.appendChild(tdStatus);
-            tr.appendChild(tdAction);
+      });
+      // Parsing response
+      const data = await response.json();
+      // checking errors
+      if (data.error) {
+        alert('Error:\n' + data.error);
+      } else {
+        // successfull response returns array of tasks
+        // creating table rows for every task
+        data.tasks.forEach((task) => {
+          // creating row element
+          const tr = document.createElement('tr');
+          // creating title cell
+          const tdTitle = document.createElement('td'); tdTitle.appendChild(document.createTextNode(task.title));
+          // creating status cell
+          const tdStatus = document.createElement('td'); tdStatus.appendChild(document.createTextNode(task.status)); tdStatus.setAttribute('status', task.status);
+          // creating edit button
+          const editBtn = document.createElement('button');
+          editBtn.setAttribute('class', 'task-btn');
+          editBtn.appendChild(document.createTextNode('Edit'));
+          editBtn.onclick = () => { // adding onclick handler
+            window.location.replace('/edit-task'); // go to edit task page
+            localStorage.setItem('edit-task', JSON.stringify(task)) // save the task details in localstorage temporarily
+          };
+          // creating details button
+          const detailsBtn = document.createElement('button');
+          detailsBtn.setAttribute('class', 'task-btn');
+          detailsBtn.appendChild(document.createTextNode('Details'));
+          detailsBtn.onclick = () => { // adding onclick handler
+            window.location.replace('/task-details'); // go to task details page
+            localStorage.setItem('task-details', JSON.stringify(task)) // save the task details in localstorage temporarily
+          };
+          // creating delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.setAttribute('class', 'task-btn');
+          deleteBtn.appendChild(document.createTextNode('Delete'));
+          deleteBtn.onclick = () => { // adding onclick handler
+            deleteTask(task._id); // delete task request
+          };
+          // creating action buttons cell
+          const tdAction = document.createElement('td');
+          tdAction.setAttribute('class', 'row gap-2 align-center');
+          tdAction.append(detailsBtn, editBtn, deleteBtn); // adding children
+          // adding cells to row
+          tr.appendChild(tdTitle);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAction);
 
-            tbody.append(tr); // adding row to table body
-          })
-        });
+          tbody.append(tr); // adding row to table body
+        }); // end of foreach loop
+      };
 
     }
   </script>
